@@ -217,37 +217,39 @@ button_image = Button(
 )
 button_image.place(x=3, y=270)
 
-#Botão visualização
-button_ia = Button(
-    page_one,
-    text=text_ia_button,
-    font=button_font,
-    bg=color_canva_main,
-    fg=color_text,
-    activebackground=color_canva_main,
-    activeforeground=color_text,
-    command=def_ia,
-    relief="groove",
-    cursor='hand2',
-    width=22
-)
-button_ia.place(x=3,y= 340)
+#A ser implementado no futuro
 
-#Botão pdf
-button_pdf = Button(
-    page_one,
-    text=text_pdf_button,
-    font=button_font,
-    bg=color_canva_main,
-    fg=color_text,
-    activebackground=color_canva_main,
-    activeforeground=color_text,
-    command=def_pdf,
-    relief="groove",
-    cursor='hand2',
-    width=22
-)
-button_pdf.place(x=3,y= 410)
+# #Botão visualização
+# button_ia = Button(
+#     page_one,
+#     text=text_ia_button,
+#     font=button_font,
+#     bg=color_canva_main,
+#     fg=color_text,
+#     activebackground=color_canva_main,
+#     activeforeground=color_text,
+#     command=def_ia,
+#     relief="groove",
+#     cursor='hand2',
+#     width=22
+# )
+# button_ia.place(x=3,y= 340)
+
+# #Botão pdf
+# button_pdf = Button(
+#     page_one,
+#     text=text_pdf_button,
+#     font=button_font,
+#     bg=color_canva_main,
+#     fg=color_text,
+#     activebackground=color_canva_main,
+#     activeforeground=color_text,
+#     command=def_pdf,
+#     relief="groove",
+#     cursor='hand2',
+#     width=22
+# )
+# button_pdf.place(x=3,y= 410)
 
 Debug = Label(
     page_one,
