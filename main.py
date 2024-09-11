@@ -1,19 +1,12 @@
 from tkinter import font as tkfont
-from tkinter import filedialog
-from tkinter import messagebox
 from tkinter import ttk
 from tkinter import *
 
 import define
-import docs
-
-import matplotlib.pyplot as plt
-import pandas as pd
-import os
 
 
 page_one = Tk() #Starter window
-
+#------------------------------ Variables ------------------------------#
 width = 1100
 height = 650
 
@@ -26,14 +19,13 @@ color_text_light = "#404040"
 
 text_top = "Data Analyser Plotter"
 text_open_button = "Abrir Arquivos"
-text_imagem_button = "Gerar Imagem"
-text_pdf_button = "PDF"
+text_graf_button = "Gerar Imagem"
+text_docs_button = "Documentação"
 text_ia_button = "Machine Learn"
 text_debug = "Esperando .CSV"
 
-image_for_main_path = "resource/for_branco.png"
+dir_for_main = "resource/for_branco.png"
 dir_res_icon = "resource/for_preto_icon.ico"
-
 dir_folder_plotter = ['plotter/lap','plotter/laptime','plotter/logs']
 
 title_font = tkfont.Font(size=14, weight='bold')
@@ -41,9 +33,7 @@ button_font = tkfont.Font(family='Inter', size=14)
 debug_font = tkfont.Font(family='Inter', size=12)
 
 
-#---------- Mensagem ----------#
-
-
+#------------------------------ Transmission ------------------------------#
 df = []
 df_org = []
 col_index = []
@@ -61,9 +51,7 @@ var_range = IntVar(value=1)
 var_absmax = IntVar(value=1)
 
 
-#---------- Funções ----------#
-
-
+#------------------------------ Functions ------------------------------#
 def def_open():    
     global axisx_log
     global dir_folder_plotter
@@ -93,12 +81,12 @@ def def_open():
     axisx_log = axisx_log_
 
     combobox_data['values'] = col_index_
-    text_2['text'] = name_file_
-    text_3['text'] = f"{tam_bytes_}" + " Bytes"
+    text_file['text'] = name_file_
+    text_bytes['text'] = f"{tam_bytes_}" + " Bytes"
 
     Debug['text'] = "Carregado"
 
-def def_image():
+def def_graf():
     msg_tranm = [var_axisy.get(),var_axisx.get(),var_axisy_all.get(),var_axisx_all.get(),var_max.get(),var_min.get(),var_avg.get(),var_range.get(),var_absmax.get()]
     define.prepare_msg(msg_tranm, df, df_org, col_index, axisx_lap, axisx_laptime, axisx_log)
     Debug['text'] = "Imagem gerada"
@@ -107,12 +95,9 @@ def def_ia():
     Debug['text'] = "Visualização"
 
 def def_pdf():
-    docs.page_two()
-    Debug['text'] = "PDF Gerado"
+    define.page_two()
 
-
-#---------- Code ----------#
-
+#------------------------------ Window Design ------------------------------#
 page_one.geometry(f'{width}x{height}+250+50')
 page_one.resizable(False, False)
 page_one.title(text_top)
@@ -128,6 +113,16 @@ canvas_sidetop = Canvas(
     highlightbackground=color_canva_main_outline,
     borderwidth=0)
 canvas_sidetop.place(x=0,y=0)
+
+#Texto do topo da janela
+canvas_sidetop.create_text(
+    670,
+    50,
+    text=text_top,
+    font=title_font,
+    fill=color_text,
+    anchor='center'
+)
 
 #região cinza escuro do lado esquerdo
 canvas_sideleft = Canvas(
@@ -165,26 +160,80 @@ line_top = Canvas(
 )
 line_top.place(x=258,y=94)
 
-#Texto do topo da janela
-canvas_sidetop.create_text(
-    670,
-    50,
-    text=text_top,
-    font=title_font,
-    fill=color_text,
-    anchor='center'
-)
-
 #Imagem do formula
-image_main = PhotoImage(file=image_for_main_path)
+for_main = PhotoImage(file=dir_for_main)
 logo = Label(
     page_one,
-    image=image_main,
+    image=for_main,
     justify="center",
     anchor="center",
     bg=color_canva_main)
 logo.place(x=40,y=2)
 
+#Texto da caixa de seleção do eixo y
+text_axis_y = Label(
+    page_one,
+    text="Dado (Eixo y):",
+    bg=color_background,
+    fg=color_text,
+    font=debug_font,
+    width=15,
+    justify='center'
+)
+text_axis_y.place(x=305,y=188)
+
+#Texto da caixa de seleção do eixo x
+text_axis_x = Label(
+    page_one,
+    text="Tempo (Eixo x):",
+    bg=color_background,
+    fg=color_text,
+    font=debug_font, 
+    width=15,
+    justify='center'
+)
+text_axis_x.place(x=305,y=278)
+
+
+#------------------------------ File Details ------------------------------#
+#Texto mostrando a situação do programa
+Debug = Label(
+    page_one,
+    text=text_debug,
+    bg=color_canva_main,
+    fg=color_text,
+    font=debug_font,
+    width=20,
+    justify='center'
+)
+Debug.place(x=40,y=620)
+
+#Texto mostrando o nome do arquivo selecionado
+text_file = Label(
+    page_one,
+    text="-",
+    bg=color_canva_main,
+    fg=color_text,
+    font=debug_font,
+    width=20,
+    justify='center'
+)
+text_file.place(x=40,y=530)
+
+#Texto mostrando o tamanho do arquivo selecionado
+text_bytes = Label(
+    page_one,
+    text="-",
+    bg=color_canva_main,
+    fg=color_text,
+    font=debug_font,
+    width=20,
+    justify='center'
+)
+text_bytes.place(x=40,y=560)
+
+
+#------------------------------ Buttons ------------------------------#
 #Botão abrir arquivo
 button_open = Button(
     page_one,
@@ -201,25 +250,23 @@ button_open = Button(
 )
 button_open.place(x=3,y= 200)
 
-#Botão gerar imagem
-button_image = Button(
+#Botão gerar gráficos
+button_graf = Button(
     page_one,
-    text=text_imagem_button,
+    text=text_graf_button,
     font=button_font,
     bg=color_canva_main,
     fg=color_text,
     activebackground=color_canva_main,
     activeforeground=color_text,
-    command=def_image,
+    command=def_graf,
     relief="groove",
     cursor='hand2',
     width=22
 )
-button_image.place(x=3, y=270)
+button_graf.place(x=3, y=270)
 
-#A ser implementado no futuro
-
-# #Botão visualização
+# #Botão de cruzamento de dados (NOIA)
 # button_ia = Button(
 #     page_one,
 #     text=text_ia_button,
@@ -235,66 +282,23 @@ button_image.place(x=3, y=270)
 # )
 # button_ia.place(x=3,y= 340)
 
-# #Botão pdf
-# button_pdf = Button(
-#     page_one,
-#     text=text_pdf_button,
-#     font=button_font,
-#     bg=color_canva_main,
-#     fg=color_text,
-#     activebackground=color_canva_main,
-#     activeforeground=color_text,
-#     command=def_pdf,
-#     relief="groove",
-#     cursor='hand2',
-#     width=22
-# )
-# button_pdf.place(x=3,y= 410)
-
-Debug = Label(
+#Botão Documentação
+button_docs = Button(
     page_one,
-    text=text_debug,
+    text=text_docs_button,
+    font=button_font,
     bg=color_canva_main,
     fg=color_text,
-    font=debug_font,
-    width=20,
-    justify='center'
+    activebackground=color_canva_main,
+    activeforeground=color_text,
+    command=def_pdf,
+    relief="groove",
+    cursor='hand2',
+    width=22
 )
-Debug.place(x=40,y=620)
+button_docs.place(x=3,y= 410)
 
-text_1 = Label(
-    page_one,
-    text="Dado (Eixo y):",
-    bg=color_background,
-    fg=color_text,
-    font=debug_font,
-    width=15,
-    justify='center'
-)
-text_1.place(x=305,y=188)
-
-text_2 = Label(
-    page_one,
-    text="-",
-    bg=color_canva_main,
-    fg=color_text,
-    font=debug_font,
-    width=20,
-    justify='center'
-)
-text_2.place(x=40,y=530)
-
-text_3 = Label(
-    page_one,
-    text="-",
-    bg=color_canva_main,
-    fg=color_text,
-    font=debug_font,
-    width=20,
-    justify='center'
-)
-text_3.place(x=40,y=560)
-
+#Combobox do eixo y
 combobox_data = ttk.Combobox(
     page_one,
     justify='center',
@@ -305,17 +309,7 @@ combobox_data = ttk.Combobox(
 )
 combobox_data.place(x=460,y=190)
 
-text_4 = Label(
-    page_one,
-    text="Tempo (Eixo x):",
-    bg=color_background,
-    fg=color_text,
-    font=debug_font, 
-    width=15,
-    justify='center'
-)
-text_4.place(x=305,y=278)
-
+#Combobox do eixo x
 combobox_x = ttk.Combobox(
     page_one,
     justify='center',
@@ -326,7 +320,8 @@ combobox_x = ttk.Combobox(
 )
 combobox_x.place(x=460,y=280)
 
-check1 = Checkbutton(
+#Check do combobox do eixo y
+check_y = Checkbutton(
     page_one,
     height=1,
     width=4,
@@ -339,9 +334,10 @@ check1 = Checkbutton(
     font=debug_font,
     variable=var_axisy_all
 )
-check1.place(x=460,y=215)
+check_y.place(x=460,y=215)
 
-check2 = Checkbutton(
+#Check do combobox do eixo x
+check_x = Checkbutton(
     page_one,
     height=1,
     width=4,
@@ -354,8 +350,10 @@ check2 = Checkbutton(
     font=debug_font,
     variable=var_axisx_all
 )
-check2.place(x=460,y=305)
+check_x.place(x=460,y=305)
 
+#------------------------------ Statistic ------------------------------#
+#Contorno branco das unidades
 canvas_units = Canvas(
     page_one,
     width=150,
@@ -366,7 +364,8 @@ canvas_units = Canvas(
 )
 canvas_units.place(x=870,y=125)
 
-text_5 = Label(
+#Texto das unidades
+text_units = Label(
     page_one,
     text="Estatística",
     bg=color_background,
@@ -375,8 +374,9 @@ text_5 = Label(
     width=15,
     justify='center'
 )
-text_5.place(x=880,y=148)
+text_units.place(x=880,y=148)
 
+#Check de maximo
 check_max = Checkbutton(
     page_one,
     height=1,
@@ -392,6 +392,7 @@ check_max = Checkbutton(
 )
 check_max.place(x=900,y=180)
 
+#Check de minimo
 check_min = Checkbutton(
     page_one,
     height=1,
@@ -407,6 +408,7 @@ check_min = Checkbutton(
 )
 check_min.place(x=900,y=210)
 
+#Check da media
 check_avg = Checkbutton(
     page_one,
     height=1,
@@ -422,6 +424,7 @@ check_avg = Checkbutton(
 )
 check_avg.place(x=900,y=240)
 
+#Check do range
 check_range = Checkbutton(
     page_one,
     height=1,
@@ -437,6 +440,7 @@ check_range = Checkbutton(
 )
 check_range.place(x=900,y=270)
 
+#Check do abs max
 check_absmax = Checkbutton(
     page_one,
     height=1,

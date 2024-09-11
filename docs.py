@@ -1,113 +1,232 @@
-#A ser implementado no futuro
+from docx import Document
+from docx.shared import Pt, RGBColor, Inches
+from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
+from datetime import datetime
+
+# dict_docs = {
+# 'imagem 1': {'title': 'Temperatura do ar por log do teste', 'font': 'Acervo Pessoal', 'description': 'Texto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemplo', 'filename': 'E:/GitHub/Data_Analytics_Plotter/plotter/logs/logs X Air Temp Inlet C.png'},
+# 'imagem 2': {'title': 'Pressão de freio da dianteira por log do teste', 'font': 'Acervo Pessoal', 'description': 'Texto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemploTexto exemplo', 'filename': 'E:/GitHub/Data_Analytics_Plotter/plotter/logs/logs X Alias Brake Pres Front MPa.png'},
+# 'name_report': 'Validação da capacidade de frenagem do protótipo de freio do e21',
+# 'objetivo': 'Através de testes como pressão máxima das linhas de freio, variação do bias e hysteres do freio e o quanto isso impacta no wheel locked',
+# 'responsible': 'Congonhas e Spam',
+# 'driver': 'Rorato e Rubinho',
+# 'date': '12 de dezembro',
+# 'hour_in': '8:23',
+# 'hour_out': '18:17',
+# 'local': 'Bebedouro',
+# 'problem': '	Desgaste Prematuro das Pastilhas de Freio Durante as primeiras rodadas de frenagem brusca a 60 km/h, observou-se um desgaste anormal das pastilhas de freio. Isso causou um aumento gradual na distância de frenagem, comprometendo o desempenho do sistema. Após uma inspeção visual, a equipe constatou que o material das pastilhas não suportava as altas temperaturas geradas durante a frenagem intensa, perdendo eficiência rapidamente. Foi decidido substituir as pastilhas por um material com maior resistência térmica, feito de composto cerâmico-carbono. Com isso, os testes subsequentes mostraram que o desgaste diminuiu significativamente e a eficiência da frenagem se estabilizou. Superaquecimento dos Discos de Freio Após várias frenagens consecutivas, os discos de freio atingiram temperaturas excessivas, o que resultou em um fenômeno conhecido como "fading" (perda temporária da capacidade de frenagem). Isso aumentou a distância de parada e gerou riscos ao piloto. A equipe identificou que a ventilação dos discos de freio era inadequada para dissipar o calor acumulado, especialmente durante frenagens repetidas. Um sistema de ventilação forçada foi instalado nos discos, aumentando a circulação de ar e melhorando a dissipação de calor. Além disso, a equipe alterou o cronograma de testes, incluindo pausas para permitir o resfriamento dos componentes entre as sessões de frenagem. Após essas modificações, o problema de superaquecimento foi resolvido.',
+# 'conclusion': 'Após os ajustes e correções implementados durante o teste, o sistema de freios passou a atender aos requisitos de desempenho definidos pela equipe. O protótipo demonstrou alta capacidade de frenagem, tanto em superfícies secas quanto molhadas, com distâncias de parada dentro dos limites esperados. O teste foi considerado um sucesso, e o protótipo de freio foi aprovado para ser utilizado na competição.'
+# }
+
+def report(dict_docs):
+
+    general = f"O teste de foi realizado no dia " + dict_docs["date"] + ", no local " + dict_docs["local"] + ". As atividades começaram às " + dict_docs["hour_in"] + " e foram concluídas às " + dict_docs["hour_out"] + ". O responsável pelo teste foi " + dict_docs["responsible"] + ", com os pilotos " + dict_docs["driver"] + " conduzindo o carro durante as fases do experimento."
 
 
+    current_year = datetime.now().strftime("%Y")
+    current_month = datetime.now().strftime("%m")
+    current_day = datetime.now().strftime("%d")
+    i=1
 
-# from tkinter import font as tkfont
-# from tkinter import filedialog
-# from tkinter import messagebox
-# from tkinter import ttk
-# from tkinter import *
+    # Criando o documento
+    doc = Document()
 
-# from datetime import datetime
-# from fpdf import FPDF
+    # Ajustar margens
+    sections = doc.sections
+    for section in sections:
+        section.top_margin = Pt(85)  # 3 cm
+        section.bottom_margin = Pt(57)  # 2 cm
+        section.left_margin = Pt(85)  # 3 cm
+        section.right_margin = Pt(57)  # 2 cm
+    
+#--------------- Cover ---------------#
 
-# import matplotlib.pyplot as plt
-# import pandas as pd
-# import os
+    header = doc.add_paragraph()
+    run = header.add_run("Universidade de São Paulo\nEscola de Engenharia de São Carlos\nEESC-USP Formula SAE")
+    run.font.size = Pt(14)
+    run.font.name = 'Segoe UI'
+    header.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    
+    doc.add_paragraph("\n" * 3)
 
-# def page_two():
-#     page_two = Tk() #Starter window
+    title = doc.add_paragraph()
+    run = title.add_run(dict_docs["name_report"])
+    run.bold = True
+    run.font.size = Pt(18)
+    run.font.name = 'Segoe UI'
+    title.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
-#     width = 1100
-#     height = 650
+    doc.add_paragraph("\n" * 3)
 
-#     color_background = "#1f1f1f"
-#     color_canva_main = "#181818"
-#     color_canva_main_outline = "#181818"
-#     color_line = "#FED700"
-#     color_text="White"
-#     color_text_light = "#404040"
+    logo = doc.add_paragraph()
+    run = logo.add_run()
+    run.add_picture('resource/for_preto.png') 
+    logo.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    doc.add_paragraph("\n" * 10)
+    
+    footer = doc.add_paragraph()
+    run = footer.add_run(f"SÃO CARLOS - SP\n{current_year}")
+    run.font.size = Pt(12)
+    run.font.name = 'Segoe UI'
+    footer.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+    doc.add_page_break()
 
-#     text_top = "PDF"
-#     text_open_button = "Abrir Imagens"
-#     text_pdf_button = "Gerar PDF"
+#--------------- Geral ---------------#
+    title = doc.add_heading(level=1)
+    run = title.add_run("1. Geral")
 
-#     image_for_main_path = "resource/for_branco.png"
-#     dir_res_icon = "resource/for_preto_icon.ico"
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    run.font.all_caps = True
+    run.bold = True
+    run.font.size = Pt(14)
 
-#     title_font = tkfont.Font(size=14, weight='bold')
-#     button_font = tkfont.Font(family='Inter', size=14)
-#     debug_font = tkfont.Font(family='Inter', size=12)
+    title.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = title.paragraph_format
+    paragraph_format.space_before = Pt(24)
+    paragraph_format.line_spacing = 1.5
 
-#     page_two.geometry(f'{width}x{height}+270+70')
-#     page_two.resizable(False, False)
-#     page_two.title(text_top)
-#     page_two.iconbitmap(dir_res_icon)
-#     page_two.configure(bg = color_background)
 
-#     #região cinza escuro no topo
-#     canvas_sidetop = Canvas(
-#         page_two,
-#         width=width,
-#         height=90,
-#         bg=color_canva_main,
-#         highlightbackground=color_canva_main_outline,
-#         borderwidth=0)
-#     canvas_sidetop.place(x=0,y=0)
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run(general)
+    run.font.name = 'Segoe UI'
+    run.font.size = Pt(12)
 
-#     #Linha amarela do topo
-#     line_top = Canvas(
-#         page_two,
-#         width=10000,
-#         height=1,
-#         bg=color_line,
-#         highlightcolor=color_line,
-#         highlightthickness=0,
-#         highlightbackground=color_line,
-#         borderwidth=0
-#     )
-#     line_top.place(x=0,y=94)
+    paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = paragraph.paragraph_format
+    paragraph_format.line_spacing = 1.5
 
-#     Debug = Text(
-#         page_two,
-#         bg=color_canva_main,
-#         fg=color_text,
-#         font=debug_font,
-#         height=10,  # Ajuste a altura conforme necessário
-#         width=80,  # Ajuste a largura conforme necessário
-#         wrap=WORD,  # Define quebra automática de linha
-#         state=NORMAL  # Permite edição (mude para DISABLED se não quiser permitir edição pelo usuário)
-#     )
-#     Debug.place(x=300, y=450)
+#--------------- Objetivo ---------------#
+    title = doc.add_heading(level=1)
+    run = title.add_run("2. Objetivo")
 
-#     #Botão abrir arquivo
-#     button_open = Button(
-#         page_two,
-#         text=text_open_button,
-#         font=button_font,
-#         bg=color_canva_main,
-#         fg=color_text,
-#         activebackground=color_canva_main,
-#         activeforeground=color_text,
-#         relief="groove",
-#         cursor='hand2',
-#         width=18
-#     )
-#     button_open.place(x=35,y=30)
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    run.font.all_caps = True
+    run.bold = True
+    run.font.size = Pt(14)
 
-#     #Botão gerar pdf
-#     button_image = Button(
-#         page_two,
-#         text=text_pdf_button,
-#         font=button_font,
-#         bg=color_canva_main,
-#         fg=color_text,
-#         activebackground=color_canva_main,
-#         activeforeground=color_text,
-#         relief="groove",
-#         cursor='hand2',
-#         width=18
-#     )
-#     button_image.place(x=270, y=30)
+    title.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = title.paragraph_format
+    paragraph_format.space_before = Pt(24)
+    paragraph_format.line_spacing = 1.5
 
-#     page_two.mainloop() #Finish window
+
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run(dict_docs['objetivo'])
+    run.font.name = 'Segoe UI'
+    run.font.size = Pt(12)
+
+    paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = paragraph.paragraph_format
+    paragraph_format.line_spacing = 1.5
+
+    doc.add_page_break()
+
+
+#--------------- Logs ---------------#
+    title = doc.add_heading(level=1)
+    run = title.add_run("3. Logs")
+
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    run.font.all_caps = True
+    run.bold = True
+    run.font.size = Pt(14)
+
+    title.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = title.paragraph_format
+    paragraph_format.space_before = Pt(24)
+    paragraph_format.line_spacing = 1.5
+
+    for key in dict_docs:
+        if key.startswith('imagem'):
+            value = dict_docs[key]
+
+            # Adiciona e formata o título
+            title_paragraph = doc.add_paragraph()
+            title_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+            run = title_paragraph.add_run(f"Imagem {i} - {value['title']}")
+            run.bold = True
+            run.font.size = Pt(10)
+            run.font.name = 'Segoe UI'        
+            run.font.color.rgb = RGBColor(0, 0, 0)
+
+            image_paragraph = doc.add_paragraph()
+            image_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+            run = image_paragraph.add_run()
+            run.add_picture(value['filename'], width=Inches(6.5))
+            
+            # Adiciona e formata a fonte
+            font_paragraph = doc.add_paragraph()
+            font_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
+            paragraph_format.space_before = Pt(24)
+            run = font_paragraph.add_run(f"Fonte: {value['font']}")
+            run.font.size = Pt(10)
+            run.font.name = 'Segoe UI'    
+            run.font.color.rgb = RGBColor(0, 0, 0)
+
+            
+            # Adiciona e formata a descrição
+            description_paragraph = doc.add_paragraph()
+            description_paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+            run = description_paragraph.add_run(value['description'])
+            run.font.size = Pt(12)
+            run.font.name = 'Segoe UI'    
+            run.font.color.rgb = RGBColor(0, 0, 0)
+
+            i += 1
+            doc.add_page_break()
+    
+    
+
+
+#--------------- Problemas e soluções ---------------#
+    title = doc.add_heading(level=1)
+    run = title.add_run('4. Problemas e Soluções')
+
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    run.font.all_caps = True
+    run.bold = True
+    run.font.size = Pt(14)
+
+    title.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = title.paragraph_format
+    paragraph_format.space_before = Pt(24)
+    paragraph_format.line_spacing = 1.5
+
+
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run(dict_docs['problem'])
+    run.font.name = 'Segoe UI'
+    run.font.size = Pt(12)
+
+    paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = paragraph.paragraph_format
+    paragraph_format.line_spacing = 1.5
+
+#--------------- Conclusão ---------------#
+    title = doc.add_heading(level=1)
+    run = title.add_run('5. Conclusão')
+
+    run.font.color.rgb = RGBColor(0, 0, 0)
+    run.font.all_caps = True
+    run.bold = True
+    run.font.size = Pt(14)
+
+    title.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = title.paragraph_format
+    paragraph_format.space_before = Pt(24)
+    paragraph_format.line_spacing = 1.5
+
+
+    paragraph = doc.add_paragraph()
+    run = paragraph.add_run(dict_docs['conclusion'])
+    run.font.name = 'Segoe UI'
+    run.font.size = Pt(12)
+
+    paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
+    paragraph_format = paragraph.paragraph_format
+    paragraph_format.line_spacing = 1.5
+
+#--------------- Salvar Arquivo ---------------#
+    doc.save(f'Test_Report_{current_year}_{current_month}_{current_day}.docx')
+
+# report(dict_docs)
